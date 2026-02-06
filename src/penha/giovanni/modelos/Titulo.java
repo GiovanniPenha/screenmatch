@@ -1,6 +1,7 @@
 package penha.giovanni.modelos;
 
 import com.google.gson.annotations.SerializedName;
+import penha.giovanni.excecao.ErroConversaoDeAnoException;
 
 public class Titulo implements Comparable<Titulo> {
 
@@ -21,6 +22,10 @@ public class Titulo implements Comparable<Titulo> {
 
     public Titulo(TituloOmdb meuTituloOmdb) {
         this.nome = meuTituloOmdb.title();
+
+        if (meuTituloOmdb.year().length() > 4){
+            throw new ErroConversaoDeAnoException("Não foi possível converter o ano");
+        }
         this.anoDeLancamento = Integer.valueOf(meuTituloOmdb.year());
         this.duracaoEmMinutos = Integer.valueOf(meuTituloOmdb.runtime().substring(0, 3));
     }
@@ -90,8 +95,8 @@ public class Titulo implements Comparable<Titulo> {
 
     @Override
     public String toString() {
-        return "nome: " + nome +
+        return "(nome: " + nome +
                 ", anoDeLancamento: " + anoDeLancamento +
-                ", Duração: " + duracaoEmMinutos + " min.";
+                ", Duração: " + duracaoEmMinutos + " min.)";
     }
 }
